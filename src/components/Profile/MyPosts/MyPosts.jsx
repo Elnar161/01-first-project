@@ -7,6 +7,8 @@ let postsData = [
     {id:2, message: 'It`s my firs post', likesCount: 14}
 ]
 
+let postsElements = postsData.map(p => <Post message={p.message} likesCount={p.likesCount}/>)
+
 const MyPosts = () => {
     return(
         <div>
@@ -16,8 +18,7 @@ const MyPosts = () => {
                 <button>Add post</button>
             </div>
             <div className={s.posts}>
-                <Post message={postsData[0].message} likesCount={postsData[0].likesCount}/>
-                <Post message={postsData[1].message} likesCount={postsData[1].likesCount}/>
+                {postsElements}
             </div>            
         </div>
     );
