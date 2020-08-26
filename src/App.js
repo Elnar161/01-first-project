@@ -13,6 +13,7 @@ import Settings from './components/Settings/Settings';
 
 
 const App = (props) => {
+  debugger;
   return (    
     <BrowserRouter> 
       <div className="app-wrapper">
@@ -20,8 +21,8 @@ const App = (props) => {
         <Navbar/>
 
         <div className="app-wrapper-content">
-          <Route path='/dialogs' render={ () => <Dialogs dialogs={props.dialogs} messages={props.messages}/> }/>
-          <Route path='/profile' render={() => <Profile postsData={props.postsData}/> }/>
+          <Route path='/dialogs' render={ () => <Dialogs dialogsPageState={props.appState.dialogsPage}/> }/>
+          <Route path='/profile' render={() => <Profile profilePageState={props.appState.profilePage}/> }/>
           <Route path='/music' component={Music}/>
           <Route path='/news' component={News}/>
           <Route path='/settings' component={Settings}/>
