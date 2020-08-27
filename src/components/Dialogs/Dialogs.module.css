@@ -3,5 +3,8 @@
     grid-template-columns: 2fr 10fr;
 }
 
-
-
+.messages{
+    border: 1px solid green;
+    border-radius: 3px;
+    margin:5px;
+}
