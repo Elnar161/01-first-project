@@ -3,7 +3,7 @@ import s from './MyPosts.module.css';
 import Post from './Post/Post';
 
 const MyPosts = (props) => {
-    debugger;
+    let arrProsts = props.postsData.map(p => <Post message={p.message} likeCount={p.likeCount}/>);
     return(
         <div>
             
@@ -12,7 +12,7 @@ const MyPosts = (props) => {
                 <button>Add post</button>
             </div>
             <div className={s.posts}>
-                {props.postsData.map(p => <Post message={p.message} likesCount={p.likesCount}/>)} 
+                {arrProsts} 
             </div>            
         </div>
     );
