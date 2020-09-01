@@ -13,6 +13,10 @@ const Dialogs = (props) => {
     let textByAdd_ref = React.createRef();
     let addMessage = () => { alert(textByAdd_ref.current.value)};
 
+    let textByAddChange = () => {
+            props.changeNewMessageText(textByAdd_ref.current.value);
+    }
+
     return (
         
             <div className={s.dialogs}>
@@ -22,7 +26,7 @@ const Dialogs = (props) => {
                 <div className={s.messages}>
                     {arrMessages}
 
-                    <textarea id='textByAdd' ref={textByAdd_ref}></textarea>
+                    <textarea id='textByAdd' ref={textByAdd_ref} onChange={textByAddChange} value={props.dialogsPageState.newMessageText}></textarea>
                     <button onClick={addMessage}>отправить</button>
                 </div>                
             </div>

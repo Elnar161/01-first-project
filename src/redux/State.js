@@ -18,6 +18,8 @@ let state = {
       {id:4, message: 'yo'},
       {id:5, message: 'yo'}
     ],
+
+    newMessageText: "newMessageText"
   },
   
   profilePage: {
@@ -60,5 +62,10 @@ export let changeNewPostText = (postText) =>{
   rerenderEnrireTree();
 }
 
+export let changeNewMessageText = (messageText) =>{
+  state.dialogsPage.newMessageText = messageText;
+
+  rerenderEnrireTree();
+}
 
 export default state;
