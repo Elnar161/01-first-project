@@ -1,3 +1,5 @@
+import { rerenderEnrireTree } from './../render';
+ 
 let state = {
   dialogsPage:{
     dialogs: 
@@ -23,7 +25,9 @@ let state = {
     [
       {id:1, message: 'Hi, how a you', likesCount: 10},
       {id:2, message: 'It`s my firs post', likesCount: 14}
-    ]
+    ],
+
+    newPostText: "newPostText"
   },
 
   sideBar:{
@@ -37,15 +41,24 @@ let state = {
   }
 };
 
- export let addPost = (postMessage) => {
-   debugger;
+ export let addPost = () => {
   let newPost = {
     id: 5,
-    message: postMessage,
+    message: state.profilePage.newPostText,
     likesCount: 0
   };
 
   state.profilePage.postsData.push(newPost);
+  state.profilePage.newPostText = "";
+  rerenderEnrireTree();
 }
+
+
+export let changeNewPostText = (postText) =>{
+  state.profilePage.newPostText = postText;
+
+  rerenderEnrireTree();
+}
+
 
 export default state;
