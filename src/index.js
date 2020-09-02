@@ -11,9 +11,7 @@ export let rerenderEnrireTree = (store1) => {
     ReactDOM.render(
       <React.StrictMode>
         <App appState={store.getState()} 
-        addPost={addPost} 
-        changeNewPostText={store1.setNewPostText.bind(store1)} 
-        changeNewMessageText={store1.setNewMessageText.bind(store1)}/>        
+        dispach={store1.dispach.bind(store1)}/>        
       </React.StrictMode>,
       document.getElementById('root')
     );
