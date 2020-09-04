@@ -1,6 +1,7 @@
 import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
+import { addPostActionCreator, updateNewPostTextActionCreator } from '../../../redux/State';
 
 const MyPosts = (props) => {
     let arrProsts = props.profilePageState.postsData.map(p => <Post message={p.message} likeCount={p.likeCount}/>);
@@ -9,12 +10,12 @@ const MyPosts = (props) => {
 
 
     let addPost = () => {        
-        props.dispatch({type: 'ADD-POST'});
+        props.dispatch(addPostActionCreator());
     };
 
     let updateNewPostText = () => {
         debugger;
-         props.dispatch({type: 'UPDATE-NEW-POST-TEXT', newText: textPostRef.current.value}); 
+         props.dispatch(updateNewPostTextActionCreator(textPostRef.current.value)); 
     };
 
     return(
