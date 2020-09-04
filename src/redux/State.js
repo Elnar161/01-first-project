@@ -79,7 +79,7 @@ let store = {
     this._callSubscriber(this);
   },
 
-  dispach(action){
+  dispatch(action){
     //{type: 'ADD-POST'}
 
     if(action.type === 'ADD-POST')

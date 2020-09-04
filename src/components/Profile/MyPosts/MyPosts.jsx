@@ -8,18 +8,20 @@ const MyPosts = (props) => {
     let textPostRef = React.createRef();
 
 
-    let addPost = () => {props.addPost();};
+    let addPost = () => {        
+        props.dispatch({type: 'ADD-POST'});
+    };
 
-    let changeNewPostText = () => {
-         let newText = textPostRef.current.value; 
-         props.changeNewPostText(newText); 
+    let updateNewPostText = () => {
+        debugger;
+         props.dispatch({type: 'UPDATE-NEW-POST-TEXT', newText: textPostRef.current.value}); 
     };
 
     return(
         <div>
             <h2>MyPosts</h2>
             <div>
-                <textarea id='textPost' onChange={changeNewPostText} ref={textPostRef} value={props.profilePageState.newPostText}></textarea>
+                <textarea id='textPost' onChange={updateNewPostText} ref={textPostRef} value={props.profilePageState.newPostText}></textarea>
                 <button onClick={addPost}>Add post</button>
             </div>
             <div className={s.posts}>

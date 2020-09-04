@@ -4,14 +4,10 @@ import ReactDOM from 'react-dom';
 import store from './redux/State.js';
 import App from './App.js';
 
-export let rerenderEnrireTree = (store1) => {
-  debugger;
-    let addPost = store1.addNewPost.bind(store1);
-
+export let rerenderEnrireTree = (store) => {
     ReactDOM.render(
       <React.StrictMode>
-        <App appState={store.getState()} 
-        dispach={store1.dispach.bind(store1)}/>        
+        <App state={store.getState()} dispatch={store.dispatch.bind(store)}/>        
       </React.StrictMode>,
       document.getElementById('root')
     );
