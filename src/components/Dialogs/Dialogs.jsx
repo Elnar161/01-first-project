@@ -8,18 +8,19 @@ import { updateNewMessageTextActionCreator, addMessageActionCreator } from '../.
 
 const Dialogs = (props) => {
     debugger;
-    let arrDialogs = props.dialogsPageState.dialogs.map((d) => <Dialog name={d.name} id={d.id} avaUrl={d.avaUrl}/>);
-    let arrMessages = props.dialogsPageState.messages.map((m) => <Message message={m.message} />);
+    let state = props.store.getState().dialogsPage;
 
-    let textByAdd_ref = React.createRef();
+    let arrDialogs = state.dialogs.map((d) => <Dialog name={d.name} id={d.id} avaUrl={d.avaUrl}/>);
+    let arrMessages = state.messages.map((m) => <Message message={m.message} />);
+
     let addMessage = () => {
          let action = addMessageActionCreator();
-         props.dispatch(action);
+         props.store.dispatch(action);
         };
 
-    let textByAddChange = () => {
-        let action = updateNewMessageTextActionCreator(textByAdd_ref.current.value);
-        props.dispatch(action);            
+    let textByAddChange = (event) => {
+        let action = updateNewMessageTextActionCreator(event.target.value);
+        props.store.dispatch(action);            
     }
 
     return (
@@ -31,7 +32,7 @@ const Dialogs = (props) => {
                 <div className={s.messages}>
                     {arrMessages}
 
-                    <textarea id='textByAdd' ref={textByAdd_ref} onChange={textByAddChange} value={props.dialogsPageState.newMessageText}></textarea>
+                    <textarea id='textByAdd' onChange={textByAddChange} value={state.newMessageText}></textarea>
                     <button onClick={addMessage}>отправить</button>
                 </div>                
             </div>

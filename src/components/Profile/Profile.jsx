@@ -7,8 +7,7 @@ import ProfileInfo from './ProfileInfo/ProfileInfo';
 
 const Profile = (props) => {
     debugger;
-    return (
-        
+    return (        
         <div>
             <ProfileInfo />                                 
             <MyPosts profilePageState={props.profilePageState} dispatch={props.dispatch}/>        
