@@ -1,3 +1,10 @@
+
+
+import dialogsReducer from './DialogsReducer.js';
+import profileReducer from './ProfileReducer.js';
+import sidebarReducer from './SidebarReducer.js';
+
+
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 
@@ -97,36 +104,40 @@ let store = {
   },
 
   dispatch(action){
-    //{type: 'ADD-POST'}
 
-    if(action.type === ADD_POST)
-    {
-      let newPost = {
-        id: 7,
-        message: this._state.profilePage.newPostText,
-        likesCount: 0
-      };
+    this._state.profilePage = profileReducer(this._state.profilePage, action);
+    this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);  
+    this._state.sideBar = sidebarReducer(this._state.sideBar, action);  
+    this._callSubscriber(this);
+
+    // if(action.type === ADD_POST)
+    // {
+    //   let newPost = {
+    //     id: 7,
+    //     message: this._state.profilePage.newPostText,
+    //     likesCount: 0
+    //   };
   
-      this._state.profilePage.postsData.push(newPost);
-      this._state.profilePage.newPostText = '';
-      this._callSubscriber(this);
-    }
-    else
-    if (action.type === UPDATE_NEW_POST_TEXT)
-    {
-      this._state.profilePage.newPostText = action.newText;
-      this._callSubscriber(this);      
-    }
-    else
-    if(action.type === ADD_MESSAGE)
-    {
-      this.addNewMessage();
-    }
-    else
-    if(action.type === UPDATE_NEW_MESSAGE_TEXT)
-    {
-      this.updateNewMessageText(action.newText)
-    }
+    //   this._state.profilePage.postsData.push(newPost);
+    //   this._state.profilePage.newPostText = '';
+    //   this._callSubscriber(this);
+    // }
+    // else
+    // if (action.type === UPDATE_NEW_POST_TEXT)
+    // {
+    //   this._state.profilePage.newPostText = action.newText;
+    //   this._callSubscriber(this);      
+    // }
+    // else
+    // if(action.type === ADD_MESSAGE)
+    // {
+    //   this.addNewMessage();
+    // }
+    // else
+    // if(action.type === UPDATE_NEW_MESSAGE_TEXT)
+    // {
+    //   this.updateNewMessageText(action.newText)
+    // }
 
   }
 }
