@@ -1,7 +1,7 @@
 import * as serviceWorker from './serviceWorker';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import store from './redux/State.js';
+import store from './redux/reduxStore.js';
 import App from './App.js';
 
 export let rerenderEnrireTree = (store) => {
@@ -12,8 +12,8 @@ export let rerenderEnrireTree = (store) => {
       document.getElementById('root')
     );
   };
-
-store.setSubscribe(rerenderEnrireTree);
+debugger;
+store.subscribe(() => { rerenderEnrireTree(store); });
 
 rerenderEnrireTree(store);
 
