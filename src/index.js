@@ -3,15 +3,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import store from './redux/reduxStore.js';
 import App from './App.js';
-import StoreContext from './StoreContext';
+import { Provider } from 'react-redux';
+
 
 export let rerenderEnrireTree = (store) => {
     ReactDOM.render(
       <React.StrictMode>
-        <StoreContext.Provider value={store}>
+        <Provider store={store}>
           {/* <App  dispatch={store.dispatch.bind(store)} store={store}/>         */}
           <App state={store.getState()}/>        
-        </StoreContext.Provider>
+        </Provider>
       </React.StrictMode>,
       document.getElementById('root')
     );
