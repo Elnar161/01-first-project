@@ -9,6 +9,7 @@ import Music from './components/Music/Music';
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
+import NavBarContainer from './components/Navbar/NavBarContainer';
 
 
 
@@ -18,7 +19,7 @@ const App = (props) => {
     <BrowserRouter> 
       <div className="app-wrapper">
         <Header/>
-        <Navbar friends={props.state.sideBar.friends}/>
+        <NavBarContainer />
 
         <div className="app-wrapper-content">
           <Route path='/dialogs' render={ () => <DialogsContainer/> }/>

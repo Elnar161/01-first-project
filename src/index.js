@@ -6,21 +6,21 @@ import App from './App.js';
 import { Provider } from 'react-redux';
 
 
-export let rerenderEnrireTree = (store) => {
+// export let rerenderEnrireTree = (store) => {
     ReactDOM.render(
       <React.StrictMode>
         <Provider store={store}>
           {/* <App  dispatch={store.dispatch.bind(store)} store={store}/>         */}
-          <App state={store.getState()}/>        
+          <App />        
         </Provider>
       </React.StrictMode>,
       document.getElementById('root')
     );
-  };
-debugger;
-store.subscribe(() => { rerenderEnrireTree(store); });
+  // };
+// debugger;
+// store.subscribe(() => { rerenderEnrireTree(store); });
 
-rerenderEnrireTree(store);
+// rerenderEnrireTree(store);
 
 
 // If you want your app to work offline and load faster, you can change
