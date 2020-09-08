@@ -6,7 +6,7 @@ import Friend from './friend/Friend';
 console.log(s);
 
 const Navbar = (props) => {
-    let friendsList = props.friends.map((f) => <Friend avaUrl={f.avaUrl} name={f.name} />)
+    let friendsList = props.friends.map((f) => <Friend avaUrl={f.avaUrl} name={f.name} key={f.id}/>)
     return (
         <div>
             <nav className={s.nav}>

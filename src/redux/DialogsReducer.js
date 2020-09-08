@@ -27,34 +27,41 @@ let initialState = {
 const dialogsReducer = (state = initialState, action) =>{
     switch (action.type) {
         case ADD_MESSAGE:
-            {            
-            
-            let newMessage = {
+            return {            
+              ...state,
+              messages: [...state.messages, {id: 6, message: state.newMessageText}],
+              newMessageText: ""
+            };
+            /*let newMessage = {
                 id: 6,
                 message: state.newMessageText
               }
           
               let stateCopy = {...state};
-              stateCopy.dialogs = [...state.dialogs];
-              stateCopy.messages = [...state.messages];
-
-              stateCopy.messages.push(newMessage);
+              //stateCopy.dialogs = [...state.dialogs];
+              
+              //stateCopy.messages = [...state.messages];
+              //stateCopy.messages.push(newMessage);
+              stateCopy.messages = [...state.messages, newMessage];
               stateCopy.newMessageText = '';       
 
               return stateCopy;
             }
-            break;
+            break;*/
     
         case UPDATE_NEW_MESSAGE_TEXT:
-            {
-              let stateCopy = {...state};
+            return {
+              ...state,
+              newMessageText: action.newText//перезатирает свойство скопированное в ...state
+            };
+             /* let stateCopy = {...state};
               //stateCopy.dialogs = [...state.dialogs];
               //stateCopy.messages = [...state.messages];
               stateCopy.newMessageText = action.newText;  
             
             return stateCopy;
             }
-            break;
+            break;*/
         default: return state;
     } 
 }

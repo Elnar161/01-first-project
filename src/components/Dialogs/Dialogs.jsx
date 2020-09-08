@@ -5,8 +5,8 @@ import Message from './Message/Message';
 
 const Dialogs = (props) => {
     debugger;
-    let arrDialogs = props.dialogs.map((d) => <Dialog name={d.name} id={d.id} avaUrl={d.avaUrl}/>);
-    let arrMessages = props.messages.map((m) => <Message message={m.message} />);
+    let arrDialogs = props.dialogs.map((d) => <Dialog name={d.name} id={d.id} avaUrl={d.avaUrl} key={d.id}/>);
+    let arrMessages = props.messages.map((m) => <Message message={m.message} key={m.id} />);
 
     let addMessage = () => {
             props.addMessage();
