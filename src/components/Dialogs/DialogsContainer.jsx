@@ -34,8 +34,7 @@ import { connect } from 'react-redux';
 //                         textByAddOnChange={textByAddOnChange}/>
 //                 }
 //             }
-//         </StoreContext.Consumer>
-//     );
+//         </StoreContext.Consumer>                
 // }
 
 

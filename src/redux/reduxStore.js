@@ -2,6 +2,7 @@
 import dialogsReducer from './DialogsReducer.js';
 import profileReducer from './ProfileReducer.js';
 import sidebarReducer from './SidebarReducer.js';
+import usersReducer from './UsersReducer.js';
 
 const { createStore, combineReducers } = require("redux");
 
@@ -9,7 +10,8 @@ const { createStore, combineReducers } = require("redux");
 let reducers = combineReducers({
     dialogsPage: dialogsReducer,
     profilePage: profileReducer,
-    sideBar: sidebarReducer
+    sideBar: sidebarReducer,
+    usersPage: usersReducer
 });
 debugger;
 let store = createStore(reducers);
