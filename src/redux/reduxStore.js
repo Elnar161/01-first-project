@@ -13,7 +13,7 @@ let reducers = combineReducers({
     sideBar: sidebarReducer,
     usersPage: usersReducer
 });
-debugger;
+
 let store = createStore(reducers);
 
 export default store;

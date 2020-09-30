@@ -9,7 +9,7 @@ import News from './components/News/News';
 import Settings from './components/Settings/Settings';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
 import NavBarContainer from './components/Navbar/NavBarContainer';
-import Users from './components/Users/Users';
+import UsersContainer from './components/Users/UsersContainer';
 
 
 const App = (props) => {
@@ -23,7 +23,7 @@ const App = (props) => {
         <div className="app-wrapper-content">
           <Route path='/dialogs' render={ () => <DialogsContainer/> }/>
           <Route path='/profile' render={ () => <Profile /> }/>
-          <Route path='/users' render={ () => <Users /> }/>
+          <Route path='/users' render={ () => <UsersContainer /> }/>
 
           <Route path='/music' component={Music}/>
           <Route path='/news' component={News}/>
