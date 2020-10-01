@@ -6,25 +6,33 @@ let Users = (props) => {
     <div key={u.id}>
         <span>
             <div>
-                <img src="" alt=""/>
+                <img src={u.photoURL} alt="" className={s.userPhoto}/>
             </div>
             <div>
-                <button>Follow</button>
+                {
+                    u.followed ? 
+                    <button onClick={() => props.unfollow(u.id)}>Unfollow</button>                     
+                    :
+                    <button onClick={() => props.follow(u.id)}>Follow</button>                     
+                }
+                
             </div>
         </span>
         <span>
             <span>
                 <div>
-                    <div>
-
-                    </div>
+                    {u.fullName}
+                </div>
+                <div>
+                    {u.status}
                 </div>
             </span>
             <span>
                 <div>
-                    <div>
-                        
-                    </div>
+                    {u.location.country}
+                </div>
+                <div>   
+                    {u.location.city}                                         
                 </div>
             </span>
         </span>
@@ -32,7 +40,7 @@ let Users = (props) => {
 
     return (
         <div>
-            Users
+            {arrUsers}
         </div>
     );
 }

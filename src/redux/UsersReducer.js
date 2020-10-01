@@ -7,6 +7,7 @@ let initialState = {
         [
             {
                 id: 1,
+                photoURL: 'https://ne-kurim.ru/forum/attachments/s1200-jpeg.1186745/',
                 fullName: 'Dmitry K.',
                 status: "I'm looking for a Job right now...",
                 location: {city: "Russia", country: "Moskow"},
@@ -14,6 +15,7 @@ let initialState = {
             },
             {
                 id: 2,
+                photoURL: 'https://ne-kurim.ru/forum/attachments/s1200-jpeg.1186745/',
                 fullName: 'Svetlana D.',
                 status: "I am so pretty",
                 location: {city: "Minsk", country: "Belarus"},            
@@ -21,6 +23,7 @@ let initialState = {
             },
             {
                 id: 3,
+                photoURL: 'https://ne-kurim.ru/forum/attachments/s1200-jpeg.1186745/',
                 fullName: 'Sergey S.',
                 status: "I like football!!!",
                 location: {city: "Ukraine", country: "Kiev"},                
@@ -28,6 +31,7 @@ let initialState = {
             },
             {
                 id: 4,
+                photoURL: 'https://ne-kurim.ru/forum/attachments/s1200-jpeg.1186745/',
                 fullName: 'Andrew T.',
                 status: "I am free to help you to create good Video Production",
                 location: {city: "United States", country: "Philadelphia"},                
