@@ -5,11 +5,12 @@ import userPhoto from '../../assets/images/user.png'
 
 let Users = (props) => {
 
-    if (props.users.length === 0)
-    {
-        Axios.get("https://social-network.samuraijs.com/api/1.0/users")
-        //.then(response => {console.log(response.data.items);})
-        .then(response => {props.setUsers(response.data.items )})
+    let getUsers = () => {
+        if (props.users.length === 0) {
+            Axios.get("https://social-network.samuraijs.com/api/1.0/users")
+                //.then(response => {console.log(response.data.items);})
+                .then(response => { props.setUsers(response.data.items) })
+        }
     }
 
 
@@ -51,6 +52,7 @@ let Users = (props) => {
 
     return (
         <div>
+            <button onClick={getUsers}>GET USERS</button>
             {arrUsers}
         </div>
     );
