@@ -1,12 +1,23 @@
+import Axios from 'axios';
 import React from 'react';
 import s from './Users.module.css';
+import userPhoto from '../../assets/images/user.png'
 
 let Users = (props) => {
+
+    if (props.users.length === 0)
+    {
+        Axios.get("https://social-network.samuraijs.com/api/1.0/users")
+        //.then(response => {console.log(response.data.items);})
+        .then(response => {props.setUsers(response.data.items )})
+    }
+
+
     let arrUsers = props.users.map((u) => 
     <div key={u.id}>
         <span>
             <div>
-                <img src={u.photoURL} alt="" className={s.userPhoto}/>
+                <img src={u.photoURL != null ? u.photoURL : userPhoto} alt="" className={s.userPhoto}/>
             </div>
             <div>
                 {
@@ -29,10 +40,10 @@ let Users = (props) => {
             </span>
             <span>
                 <div>
-                    {u.location.country}
+                    {"u.location.country"}
                 </div>
                 <div>   
-                    {u.location.city}                                         
+                    {"u.location.city"}                                         
                 </div>
             </span>
         </span>
