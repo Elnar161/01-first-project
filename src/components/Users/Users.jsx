@@ -8,15 +8,23 @@ class Users extends React.Component{
     //если конструктор просто прокидывает пропсы в конструктор родителя
     //тогда его можно опустить. это произойдет автоматом
     constructor(props){
-        super(props);
-        this.getUsers();
+        super(props);        
     }
+
     getUsers = () => {
         if (this.props.users.length === 0) {
             Axios.get("https://social-network.samuraijs.com/api/1.0/users")
                 //.then(response => {console.log(response.data.items);})
                 .then(response => { this.props.setUsers(response.data.items) })
         }
+    }
+
+    componentDidMount(){
+        //вызывается сразу после монтирования (то есть, вставки 
+        //компонента в DOM). В этом методе должны происходить действия, 
+        //которые требуют наличия DOM-узлов. 
+        //Это хорошее место для создания сетевых запросов.
+        this.getUsers();
     }
 
     //метод render обязателен
