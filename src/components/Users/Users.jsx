@@ -13,9 +13,13 @@ class Users extends React.Component{
 
     getUsers = () => {
         if (this.props.users.length === 0) {
-            Axios.get("https://social-network.samuraijs.com/api/1.0/users")
+            debugger;
+            //setTimeout(
+            //    () => {
+            Axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
                 //.then(response => {console.log(response.data.items);})
-                .then(response => { this.props.setUsers(response.data.items) })
+                .then(response => { this.props.setUsers(response.data.items, response.data.totalCount) })
+            //}, 5000)
         }
     }
 
@@ -27,8 +31,25 @@ class Users extends React.Component{
         this.getUsers();
     }
 
+    onPageChanged = (pageNumber) => {
+        this.props.setCurrentPage(pageNumber);
+        Axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
+        //.then(response => {console.log(response.data.items);})
+        .then(response => { this.props.setUsers(response.data.items, response.data.totalCount) })        
+    }
+
     //метод render обязателен
     render(){
+        let pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
+        
+        let arrPages = [];
+        
+        for (let i = 1; i <= pagesCount; i++) {
+            let el = <span className={this.props.currentPage === i && s.selectedPage} 
+                           onClick={(e) => { this.onPageChanged(i); }}>{i}</span>;
+            arrPages.push(el);
+        }
+
         let arrUsers = this.props.users.map((u) => 
         <div key={u.id}>
             <span>
@@ -48,7 +69,7 @@ class Users extends React.Component{
             <span>
                 <span>
                     <div>
-                        {u.fullName}
+                        {u.name}
                     </div>
                     <div>
                         {u.status}
@@ -65,10 +86,16 @@ class Users extends React.Component{
             </span>
         </div>);
     
-        return (
+        return (       
+            
+            
             <div>
-                {/* <button onClick={this.getUsers}>GET USERS</button> */}
-                {arrUsers}
+                <div>
+                    {arrPages}
+                </div>
+                <div>
+                    {arrUsers}
+                </div>
             </div>
         );
     }
