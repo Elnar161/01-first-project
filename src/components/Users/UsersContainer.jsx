@@ -1,7 +1,11 @@
 import Axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
-import { followActionCreator, setUsersActionCreator, unfollowActionCreator, setCurrentPageActionCreator, toggleIsFetching } from '../../redux/UsersReducer';
+import { followActionCreator as follow, 
+         setUsersActionCreator as setUsers, 
+         unfollowActionCreator as unfollow, 
+         setCurrentPageActionCreator as setCurrentPage, 
+         toggleIsFetching } from '../../redux/UsersReducer';
 import Users from './Users';
 import Preloader from '../Common/Preloader/Preloader.jsx';
 
@@ -74,24 +78,30 @@ let mapStateToProps = (state) => {
     }
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return{
-        follow: (userId) => {
-            dispatch(followActionCreator(userId));
-        },
-        unfollow: (userId) => {
-            dispatch(unfollowActionCreator(userId));
-        },
-        setUsers: (users, totalCount) => {
-            dispatch(setUsersActionCreator(users, totalCount)); 
-        },
-        setCurrentPage: (currentPage) => {
-            dispatch(setCurrentPageActionCreator(currentPage)); 
-        },
-        toggleIsFetching: (isFetching) => {
-            dispatch(toggleIsFetching(isFetching)); 
-        }               
-    }
-}
+// let mapDispatchToProps = (dispatch) => {
+//     return{
+//         follow: (userId) => {
+//             dispatch(followActionCreator(userId));
+//         },
+//         unfollow: (userId) => {
+//             dispatch(unfollowActionCreator(userId));
+//         },
+//         setUsers: (users, totalCount) => {
+//             dispatch(setUsersActionCreator(users, totalCount)); 
+//         },
+//         setCurrentPage: (currentPage) => {
+//             dispatch(setCurrentPageActionCreator(currentPage)); 
+//         },
+//         toggleIsFetching: (isFetching) => {
+//             dispatch(toggleIsFetching(isFetching)); 
+//         }               
+//     }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersApiComponent);
+//export default connect(mapStateToProps, mapDispatchToProps)(UsersApiComponent);
+export default connect(mapStateToProps, 
+    {
+        follow, unfollow, setUsers, setCurrentPage,
+        toggleIsFetching
+    }
+    )(UsersApiComponent);
