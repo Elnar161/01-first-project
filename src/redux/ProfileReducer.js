@@ -1,7 +1,30 @@
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+const SET_PROFILE_INFO = 'SET_PROFILE_INFO';
 
-let initialState ={
+let initialState = {
+        profileInfo: {
+          aboutMe: null,
+          contacts: {
+            facebook: null,
+            website: null,
+            vk: null,
+            twitter: null,
+            instagram: null,
+            youtube: null,
+            github: null,
+            mainLink: null
+          },
+          lookingForAJob: false,
+          lookingForAJobDescription: null,
+          fullName: "ChistiyKaif",
+          userId: -1,
+          photos: {
+            small: null,
+            large: null
+          }
+        },
+        
    // profilePage: {
         postsData:
         [
@@ -52,6 +75,11 @@ const profileReducer = (state = initialState, action) =>{
             return stateCopy;
           }
             break;*/
+          case SET_PROFILE_INFO:
+            return{
+              ...state,
+              profileInfo: action.profileInfo
+            };            
         default: return state;
     }    
 }
@@ -61,6 +89,9 @@ export const addPostActionCreator = () => ({type: ADD_POST})
 
 export const updateNewPostTextActionCreator = (text) => 
   ({type: UPDATE_NEW_POST_TEXT, newText: text})
+
+export const setProfileInfoActionCreator= (profileInfo) =>
+  ( {type: SET_PROFILE_INFO, profileInfo} )  
 
   
 export default profileReducer;
