@@ -5,16 +5,17 @@ import { setUserDataActionCreator as setUserData} from '../../redux/AuthReducer'
 import Axios from 'axios';
 import { connect } from 'react-redux';
 
+import {getAuthMe} from '../../api/API';
+
 class HeaderContainer extends React.Component{
 
     componentDidMount(){
-        Axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`,{ withCredentials: true })            
-            .then(response => { 
+        getAuthMe()
+            .then(data => { 
                 debugger; 
-                if (response.data.resultCode === 0) {
+                if (data.resultCode === 0) {
                     //userId, email, login
-                    let data = response.data.data;
-                    let {id, email, login} = response.data.data;//деструктуризация
+                    let {id, email, login} = data.data;//деструктуризация
                     this.props.setUserData(id, email, login);
                 }
                 
