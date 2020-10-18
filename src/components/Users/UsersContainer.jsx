@@ -23,7 +23,9 @@ class UsersApiComponent extends React.Component{
             debugger;
             //setTimeout(
             //    () => {
-            Axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
+            Axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`,            
+            { withCredentials: true, 
+              headers: { "API-KEY": "12437860-4bfb-442d-b610-ad5936303546"}})
                 //.then(response => {console.log(response.data.items);})
                 .then(response => { this.props.setUsers(response.data.items, response.data.totalCount); this.props.toggleIsFetching(false); })
             //}, 5000)
@@ -47,6 +49,34 @@ class UsersApiComponent extends React.Component{
         .then(response => { this.props.setUsers(response.data.items, response.data.totalCount); this.props.toggleIsFetching(false); })        
     }
 
+    onFollow = (userId) => {
+        this.props.toggleIsFetching(true);
+        Axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`, {}, 
+            { withCredentials: true, 
+              headers: { "API-KEY": "12437860-4bfb-442d-b610-ad5936303546"}})        
+        .then(response => { 
+            if (response.data.resultCode === 0)
+            {
+                this.props.follow(userId);
+            }
+            this.props.toggleIsFetching(false); 
+        })                        
+    }
+
+    onUnFollow = (userId) => {
+        this.props.toggleIsFetching(true);
+        Axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`, 
+            { withCredentials: true, 
+              headers: { "API-KEY": "12437860-4bfb-442d-b610-ad5936303546"}})        
+        .then(response => { 
+            if (response.data.resultCode === 0)
+            {
+                this.props.unfollow(userId);
+            }
+            this.props.toggleIsFetching(false); 
+        })                  
+    }
+
     //метод render обязателен
     render(){
 
@@ -59,8 +89,8 @@ class UsersApiComponent extends React.Component{
                    pageSize={this.props.pageSize}
                    currentPage={this.props.currentPage}
                    users={this.props.users}
-                   unfollow={this.props.unfollow}
-                   follow={this.props.follow} 
+                   onUnFollow={this.onUnFollow}
+                   onFollow={this.onFollow} 
                    onPageChanged={this.onPageChanged}/>
             </div>
         );
