@@ -6,6 +6,7 @@ import { addPostActionCreator as addPost,
 import Axios from 'axios';
 import { connect } from 'react-redux';
 import store from '../../redux/reduxStore';
+import { withRouter } from 'react-router-dom';
 
 
 
@@ -13,14 +14,13 @@ class ProfileContainer extends React.Component {
 
     componentDidMount(){
         debugger;
-        this.getProfile();
-    }
-
-    getProfile = () => {
-debugger;
-        Axios.get(`https://social-network.samuraijs.com/api/1.0/profile/2`)            
-            .then(response => { this.props.setProfileInfo(response.data);})
+        let userId = this.props.match.params.userId;
+        if (!userId){
+            userId = 2;
         }
+        Axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)            
+            .then(response => { this.props.setProfileInfo(response.data);})
+    }
 
 
     render(){
@@ -44,8 +44,10 @@ let mapStateToProps = (state) => {
     }
 }
 
+ let WithUrlDataContainerComponent = withRouter(ProfileContainer);
+
 //создает контейнерную компоненту над ProfileContainer
 export default connect(
     mapStateToProps,
     { addPost, updateNewPostText, setProfileInfo }
-    ) (ProfileContainer);
+    ) (WithUrlDataContainerComponent);
