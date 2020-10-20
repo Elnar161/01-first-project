@@ -1,16 +1,10 @@
 import Axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
-import { followActionCreator as follow, 
-         setUsersActionCreator as setUsers, 
-         unfollowActionCreator as unfollow, 
-         setCurrentPageActionCreator as setCurrentPage, 
-         toggleIsFetching, toggleFollowingInProgress } from '../../redux/UsersReducer';
+import { setCurrentPageActionCreator as setCurrentPage, 
+         getUsersThunkCreator, onFollowThunkCreator, onUnFollowThunkCreator } from '../../redux/UsersReducer';
 import Users from './Users';
 import Preloader from '../Common/Preloader/Preloader.jsx';
-
-import {usersAPI, postFollow, deleteFollow} from '../../api/API.js'
-
 
 class UsersApiComponent extends React.Component{
     
@@ -25,49 +19,26 @@ class UsersApiComponent extends React.Component{
         //компонента в DOM). В этом методе должны происходить действия, 
         //которые требуют наличия DOM-узлов. 
         //Это хорошее место для создания сетевых запросов.
-        this.props.toggleIsFetching(true);
-        if (this.props.users.length === 0) {
-            usersAPI.getUsers(1, 100).then(data => 
-                  { debugger; this.props.setUsers(data.items, data.totalCount); 
-                    this.props.toggleIsFetching(false); })
-        }
+        this.props.getUsersThunkCreator(1, 100);
+        // this.props.toggleIsFetching(true);
+        // if (this.props.users.length === 0) {
+        //     usersAPI.getUsers(1, 100).then(data => 
+        //           { debugger; this.props.setUsers(data.items, data.totalCount); 
+        //             this.props.toggleIsFetching(false); })
+        // }
     }
 
-    onPageChanged = (pageNumber) => {
-        this.props.toggleIsFetching(true);
+    onPageChanged = (pageNumber) => {  
         this.props.setCurrentPage(pageNumber);
-        usersAPI.getUsers(pageNumber, 100)
-        .then(data => { this.props.setUsers(data.items, data.totalCount); this.props.toggleIsFetching(false); })        
+        this.props.getUsersThunkCreator(pageNumber, 100);      
     }
 
     onFollow = (userId) => {
-        this.props.toggleIsFetching(true);
-        this.props.toggleFollowingInProgress(true, userId);
-
-        postFollow(userId)
-        .then(data => { 
-            if (data.resultCode === 0)
-            {
-                this.props.follow(userId);
-            }
-            this.props.toggleIsFetching(false); 
-            this.props.toggleFollowingInProgress(false, userId);
-        })                        
+        this.props.onFollowThunkCreator(userId);                          
     }
 
     onUnFollow = (userId) => {
-        this.props.toggleIsFetching(true);
-        this.props.toggleFollowingInProgress(true, userId);
-
-        deleteFollow(userId)      
-        .then(data => { 
-            if (data.resultCode === 0)
-            {
-                this.props.unfollow(userId);
-            }
-            this.props.toggleIsFetching(false); 
-            this.props.toggleFollowingInProgress(false, userId);
-        })                  
+        this.props.onUnFollowThunkCreator(userId);                           
     }
 
     //метод render обязателен
@@ -126,7 +97,6 @@ let mapStateToProps = (state) => {
 //export default connect(mapStateToProps, mapDispatchToProps)(UsersApiComponent);
 export default connect(mapStateToProps, 
     {
-        follow, unfollow, setUsers, setCurrentPage,
-        toggleIsFetching, toggleFollowingInProgress
+        setCurrentPage, getUsersThunkCreator, onFollowThunkCreator, onUnFollowThunkCreator
     }
     )(UsersApiComponent);

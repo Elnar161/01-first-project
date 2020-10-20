@@ -1,9 +1,12 @@
+import { usersAPI } from "../api/API";
+
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS';
+
 
 let initialState = {
     users:[],
@@ -120,5 +123,59 @@ export const setCurrentPageActionCreator = (currentPage) => ({ type: SET_CURRENT
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
 
 export const toggleFollowingInProgress = (inProgress, userId) => ({ type: TOGGLE_IS_FOLLOWING_PROGRESS, inProgress, userId })
+
+export const getUsersThunkCreator = (currentPage, pageSize) => {
+    return (dispatch) => {
+        dispatch(toggleIsFetching(true));
+
+        usersAPI.getUsers(currentPage, pageSize).then(data => {
+            dispatch(setUsersActionCreator(data.items, data.totalCount));
+            dispatch(toggleIsFetching(false));
+        });
+    }
+}
+
+export const onPageChangedThunkCreator = (pageNumber) => {  
+    return (dispatch) => {    
+        dispatch(setCurrentPageActionCreator(pageNumber));
+        getUsersThunkCreator(pageNumber, 100);  
+    }
+}    
+
+
+export const onFollowThunkCreator = (userId) => {
+    return (dispatch) => {
+        dispatch(toggleIsFetching(true));
+        dispatch(toggleFollowingInProgress(true, userId));
+     
+        usersAPI.postFollow(userId)
+        .then(data => { 
+            if (data.resultCode === 0)
+            {
+                dispatch(followActionCreator(userId));
+            }
+            dispatch(toggleIsFetching(false)); 
+            dispatch(toggleFollowingInProgress(false, userId));
+        })  
+    }
+}
+
+export const onUnFollowThunkCreator = (userId) => {
+    return (dispatch) => {
+        dispatch(toggleIsFetching(true));
+        dispatch(toggleFollowingInProgress(true, userId));
+     
+        usersAPI.deleteFollow(userId)
+        .then(data => { 
+            if (data.resultCode === 0)
+            {
+                dispatch(unfollowActionCreator(userId));
+            }
+            dispatch(toggleIsFetching(false)); 
+            dispatch(toggleFollowingInProgress(false, userId));
+        })  
+    }
+}
+
 
 export default usersReducer;
