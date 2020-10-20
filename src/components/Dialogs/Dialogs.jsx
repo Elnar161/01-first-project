@@ -2,9 +2,15 @@ import React from 'react';
 import s from './Dialogs.module.css';
 import Dialog from './Dialog/Dialog';
 import Message from './Message/Message';
+import { Redirect } from 'react-router-dom';
 
 const Dialogs = (props) => {
-    debugger;
+    if (props.isAuth === false)
+    {
+        return <Redirect to='/Login' />
+    }
+
+
     let arrDialogs = props.dialogs.map((d) => <Dialog name={d.name} id={d.id} avaUrl={d.avaUrl} key={d.id}/>);
     let arrMessages = props.messages.map((m) => <Message message={m.message} key={m.id} />);
 
@@ -15,6 +21,8 @@ const Dialogs = (props) => {
     let textByAddOnChange = (event) => {
         props.textByAddOnChange(event.target.value);       
     };
+
+    
 
     return (
         
