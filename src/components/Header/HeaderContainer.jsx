@@ -1,25 +1,13 @@
 import React from 'react';
 import Header from './Header';
 
-import { setUserDataActionCreator as setUserData} from '../../redux/AuthReducer';
-import Axios from 'axios';
+import { getUserDataThunkCreator} from '../../redux/AuthReducer';
 import { connect } from 'react-redux';
-
-import {getAuthMe} from '../../api/API';
 
 class HeaderContainer extends React.Component{
 
     componentDidMount(){
-        getAuthMe()
-            .then(data => { 
-                debugger; 
-                if (data.resultCode === 0) {
-                    //userId, email, login
-                    let {id, email, login} = data.data;//деструктуризация
-                    this.props.setUserData(id, email, login);
-                }
-                
-            })        
+        this.props.getUserDataThunkCreator();       
     }
 
     render(){
@@ -41,5 +29,5 @@ let mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps,
-    { setUserData }
+    { getUserDataThunkCreator }
     ) (HeaderContainer);

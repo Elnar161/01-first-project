@@ -2,25 +2,20 @@ import React from 'react';
 import Profile from './Profile';
 import { addPostActionCreator as addPost, 
     updateNewPostTextActionCreator as updateNewPostText, 
-    setProfileInfoActionCreator as setProfileInfo} from '../../redux/ProfileReducer';
-import Axios from 'axios';
+    getUserProfileThunkCreator} from '../../redux/ProfileReducer';
 import { connect } from 'react-redux';
-import store from '../../redux/reduxStore';
 import { withRouter } from 'react-router-dom';
-import {getProfile} from '../../api/API'
 
 
 
 class ProfileContainer extends React.Component {
 
-    componentDidMount(){
-        debugger;
+    componentDidMount(){        
         let userId = this.props.match.params.userId;
         if (!userId){
             userId = 2;
         }
-        getProfile(userId)
-            .then(data => { this.props.setProfileInfo(data);})
+        this.props.getUserProfileThunkCreator(userId);            
     }
 
 
@@ -50,5 +45,5 @@ let mapStateToProps = (state) => {
 //создает контейнерную компоненту над ProfileContainer
 export default connect(
     mapStateToProps,
-    { addPost, updateNewPostText, setProfileInfo }
+    { addPost, updateNewPostText, getUserProfileThunkCreator }
     ) (WithUrlDataContainerComponent);

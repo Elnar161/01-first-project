@@ -32,28 +32,33 @@ export const usersAPI = {
             //       headers: { "API-KEY": KeyAPI}}) 
                   .then(response => response.data)
         )     
+    },
+
+    getProfile(userId) {
+        return (
+            instanseAxios.get(`profile/${userId}`)
+           // Axios.get(`${rootUrlAPI}/profile/${userId}`)
+            .then(response => response.data)
+        )
     }
+
+
 
 }      
 
 
-export const getProfile = (userId) => {
-    return (
-        instanseAxios.get(`profile/${userId}`)
-       // Axios.get(`${rootUrlAPI}/profile/${userId}`)
-        .then(response => response.data)
-    )
-}
 
 
 
-export const getAuthMe = (currentPage = 1, pageSize = 20) => {
-    return (
-        instanseAxios.get(`auth/me`)
-        // Axios.get(`${rootUrlAPI}/auth/me`,            
-        //     { withCredentials: true, 
-        //       headers: { "API-KEY": KeyAPI}})
-            .then(response => response.data)
-    )
+export const authAPI = {
+    getMe() {
+        return (
+            instanseAxios.get(`auth/me`)
+            // Axios.get(`${rootUrlAPI}/auth/me`,            
+            //     { withCredentials: true, 
+            //       headers: { "API-KEY": KeyAPI}})
+                .then(response => response.data)
+        )
+    }
 }
 
