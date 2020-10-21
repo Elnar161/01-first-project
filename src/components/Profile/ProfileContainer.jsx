@@ -6,6 +6,7 @@ import { addPostActionCreator as addPost,
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { withAuthRedirect } from '../../HOC/withAuthRedirect';
+import { compose } from 'redux';
 
 
 
@@ -39,12 +40,21 @@ let mapStateToProps = (state) => {
     }
 }
 
-let AuthRedirectComponent = withAuthRedirect(Profile);
+// let AuthRedirectComponent = withAuthRedirect(Profile);
 
-let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);
+// let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);
 
-//создает контейнерную компоненту над ProfileContainer
-export default connect(
-    mapStateToProps,
-    { addPost, updateNewPostText, getUserProfileThunkCreator }
-    ) (WithUrlDataContainerComponent);
+// //создает контейнерную компоненту над ProfileContainer
+// export default connect(
+//     mapStateToProps,
+//     { addPost, updateNewPostText, getUserProfileThunkCreator }
+//     ) (WithUrlDataContainerComponent);
+
+export default compose(
+    connect(
+        mapStateToProps,
+        { addPost, updateNewPostText, getUserProfileThunkCreator }
+        ),
+        withRouter,
+        withAuthRedirect
+)(ProfileContainer)    
