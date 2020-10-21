@@ -4,6 +4,7 @@ import { setCurrentPageActionCreator as setCurrentPage,
          getUsersThunkCreator, onFollowThunkCreator, onUnFollowThunkCreator } from '../../redux/UsersReducer';
 import Users from './Users';
 import Preloader from '../Common/Preloader/Preloader.jsx';
+import { withAuthRedirect } from '../../HOC/withAuthRedirect';
 
 class UsersApiComponent extends React.Component{
     
@@ -94,8 +95,10 @@ let mapStateToProps = (state) => {
 // }
 
 //export default connect(mapStateToProps, mapDispatchToProps)(UsersApiComponent);
+
+let AuthRedirectComponent = withAuthRedirect(UsersApiComponent);
 export default connect(mapStateToProps, 
     {
         setCurrentPage, getUsersThunkCreator, onFollowThunkCreator, onUnFollowThunkCreator
     }
-    )(UsersApiComponent);
+    )(AuthRedirectComponent);

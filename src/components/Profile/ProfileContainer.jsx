@@ -5,6 +5,7 @@ import { addPostActionCreator as addPost,
     getUserProfileThunkCreator} from '../../redux/ProfileReducer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { withAuthRedirect } from '../../HOC/withAuthRedirect';
 
 
 
@@ -20,11 +21,6 @@ class ProfileContainer extends React.Component {
 
 
     render(){
-        if (!props.isAuth)
-        {
-            return <Redirect to='/Login' />
-        }
-
         return (                    
             <div>
                 <Profile {...this.props} />
@@ -37,14 +33,15 @@ class ProfileContainer extends React.Component {
 
 
 
-
 let mapStateToProps = (state) => {
     return{
         profileInfo: state.profilePage.profileInfo
     }
 }
 
- let WithUrlDataContainerComponent = withRouter(ProfileContainer);
+let AuthRedirectComponent = withAuthRedirect(Profile);
+
+let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);
 
 //создает контейнерную компоненту над ProfileContainer
 export default connect(
