@@ -10,7 +10,7 @@ const Profile = (props) => {
     debugger;
     return (        
         <div>
-            <ProfileInfo profileInfo={props.profileInfo}/>                                 
+            <ProfileInfo profileInfo={props.profile} status={props.status} updateStatus={props.updateStatus} />                                 
             <MyPostsContainer store={props.store}/>        
         </div>
     );

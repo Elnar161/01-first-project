@@ -9,21 +9,33 @@ class ProfileStatus extends React.Component{
     activateEditMode = () => {
     //console.log(this.state.editMode);//false
         this.setState({
-            editMode: true
+            editMode: true,
+            status: this.props.status
         });
     //console.log(this.state.editMode);//false
         //ВНИМАНИЕ setState асинхронный
         //и выполнится после завершения этой функции
         //this.state.editMode = true;
         //this.forceUpdate();//говорит реакрту что мы изменили state. но лучше не использовать
+
+        
     }
 
     deactivateEditMode = () => {
         this.setState({
             editMode: false
         });
+
+        this.props.updateStatus(this.state.status);
     }
     
+    onStatusChange = (e) => {
+        debugger;
+        this.setState({
+            status:e.currentTarget.value
+        }) 
+    }
+
     render(){
         return(
             <div>
@@ -34,7 +46,7 @@ class ProfileStatus extends React.Component{
                 }
                 {this.state.editMode &&
                     <div>
-                        <input autoFocus='true' onBlur={this.deactivateEditMode}  value={this.props.status}></input>
+                        <input onChange={this.onStatusChange} autoFocus='true' onBlur={this.deactivateEditMode}  value={this.state.status}></input>
                     </div>
                 }           
             </div>

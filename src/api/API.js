@@ -25,28 +25,42 @@ export const usersAPI = {
     },
     
     deleteFollow(userId){
-        return(
+        return (
             instanseAxios.delete(`follow/${userId}`)
-            // Axios.delete(`${rootUrlAPI}/follow/${userId}`, 
-            //     { withCredentials: true, 
-            //       headers: { "API-KEY": KeyAPI}}) 
-                  .then(response => response.data)
-        )     
+            // Axios.post(`${rootUrlAPI}/follow/${userId}`, {}, 
+            // { withCredentials: true, 
+            // headers: { "API-KEY": KeyAPI}}) 
+            .then(response => response.data)
+        ) 
     },
 
+    getProfile(userId) {
+        console.warn('Obsolete method. Please profileAPI object.');
+        return profileAPI.getProfile(userId);
+    }
+}      
+
+export const profileAPI = {
     getProfile(userId) {
         return (
             instanseAxios.get(`profile/${userId}`)
            // Axios.get(`${rootUrlAPI}/profile/${userId}`)
             .then(response => response.data)
         )
+    },
+
+    getStatus(userId) {
+        return (
+            instanseAxios.get(`profile/status/${userId}`)        
+            .then(response => response.data)
+        )
+    },    
+
+    updateStatus(status){
+        return instanseAxios.put('profile/status', { status: status })
+        .then(response => response.data)
     }
-
-
-
-}      
-
-
+}
 
 
 
