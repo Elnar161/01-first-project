@@ -21,6 +21,15 @@ class ProfileStatus extends React.Component{
         
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if (prevProps.status !== this.props.status)
+        {   //если вызываем setState то обязательно условие а то войдет в бесконечный цикл
+            this.setState({
+                status: this.props.status
+            });
+        }
+    }
+
     deactivateEditMode = () => {
         this.setState({
             editMode: false
