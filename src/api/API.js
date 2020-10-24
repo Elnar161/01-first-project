@@ -73,6 +73,25 @@ export const authAPI = {
             //       headers: { "API-KEY": KeyAPI}})
                 .then(response => response.data)
         )
-    }
+    },
+
+    logIn(email, password, rememberMe){
+        return(
+            instanseAxios.post(`auth/login`, {
+                email: email,
+                password: password,
+                rememberMe: rememberMe,
+                captcha: true
+            })
+            .then(response => response.data)
+        );
+    },
+
+    logOut(){
+        return(
+            instanseAxios.delete(`auth/login`)
+            .then(response => response.data)
+        );
+    }    
 }
 

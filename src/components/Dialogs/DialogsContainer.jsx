@@ -50,8 +50,8 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        addMessage: () => {
-            dispatch(addMessageActionCreator())
+        addMessage: (message) => {
+            dispatch(addMessageActionCreator(message))
         },
         textByAddOnChange: (text) => {
              dispatch(updateNewMessageTextActionCreator(text))}

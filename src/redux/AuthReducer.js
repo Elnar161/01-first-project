@@ -40,6 +40,40 @@ export const getUserDataThunkCreator = () => (dispatch) => {
     })
 }
 
+export const logInUserThunkCreator = (login, password, rememberMe) => (dispatch) => {
+    authAPI.logIn(login, password, rememberMe)
+    .then( data => {
+        if (data.resultCode === 0){
+            authAPI.getMe()
+            .then(data => {         
+                if (data.resultCode === 0) {
+                    //userId, email, login
+                    let {id, email, login} = data.data;//деструктуризация
+                    dispatch(setUserDataActionCreator(id, email, login));
+                }
+                
+            })
+        }
+    });       
+}
+
+export const logOutUserThunkCreator = () => (dispatch) => {
+    authAPI.logOut()
+    .then( data => {
+        if (data.resultCode === 0){
+            authAPI.getMe()
+            .then(data => {         
+                if (data.resultCode === 0) {
+                    //userId, email, login
+                    let {id, email, login} = data.data;//деструктуризация
+                    dispatch(setUserDataActionCreator(id, email, login));
+                }
+                
+            })
+        }
+    });       
+}
+
  
 
 export default authReducer;

@@ -45,7 +45,7 @@ const profileReducer = (state = initialState, action) =>{
         case ADD_POST:
           return {
             ...state,
-            postsData: [...state.postsData, {id:7, message: state.newPostText, likesCount: 0}],
+            postsData: [...state.postsData, {id:7, message: action.newPostText, likesCount: 0}],
             newPostText: ""
           };
               /*{
@@ -96,7 +96,7 @@ const profileReducer = (state = initialState, action) =>{
 }
 
 
-export const addPostActionCreator = () => ({type: ADD_POST})
+export const addPostActionCreator = (newPostText) => ({type: ADD_POST, newPostText: newPostText})
 
 export const updateNewPostTextActionCreator = (text) => 
   ({type: UPDATE_NEW_POST_TEXT, newText: text})
@@ -122,7 +122,6 @@ export const getStatusThunkCreator = (userId) => (dispatch) => {
 export const updateStatusThunkCreator = (status) => (dispatch) => {
   profileAPI.updateStatus(status)
     .then(data => {
-      debugger;
       if (data.resultCode === 0) {
         dispatch(setStatusActionCreator(status))
       }

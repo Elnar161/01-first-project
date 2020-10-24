@@ -12,11 +12,10 @@ import NavBarContainer from './components/Navbar/NavBarContainer';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
-import Login from './components/Login/Login';
+import LoginContainer from './components/Login/LoginContainer';
 
 
 const App = (props) => {
-  debugger;
   return (    
     <BrowserRouter> 
       <div className="app-wrapper">
@@ -24,7 +23,7 @@ const App = (props) => {
         <NavBarContainer />
 
         <div className="app-wrapper-content">
-          <Route path='/login' component={Login} />
+          <Route path='/login' component={LoginContainer} />
           <Route path='/dialogs' render={ () => <DialogsContainer/> }/>
           <Route path='/profile/:userId?' render={ () => <ProfileContainer /> }/>
           <Route path='/users' render={ () => <UsersContainer /> }/>
