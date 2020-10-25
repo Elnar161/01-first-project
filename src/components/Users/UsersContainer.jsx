@@ -6,6 +6,7 @@ import Users from './Users';
 import Preloader from '../Common/Preloader/Preloader.jsx';
 import { withAuthRedirect } from '../../HOC/withAuthRedirect';
 import { compose } from 'redux';
+import {getUsers, getPageSize, getTotalUsersCount, getCurrentPage, getIsFetching, getFollowingInProgress, getUsersSuper, getUsersSuperSelector} from '../../redux/UsersSelectors';
 
 class UsersApiComponent extends React.Component{
     
@@ -44,7 +45,7 @@ class UsersApiComponent extends React.Component{
 
     //метод render обязателен
     render(){
-
+        console.log('UsersContainer render');
         return (   
             <div>   
             {this.props.isFetching ? 
@@ -64,14 +65,27 @@ class UsersApiComponent extends React.Component{
 }
 
 
+// let mapStateToProps = (state) => {
+//     return{
+//         users: state.usersPage.users,
+//         pageSize: state.usersPage.pageSize,
+//         totalUsersCount: state.usersPage.totalUsersCount,
+//         currentPage: state.usersPage.currentPage,
+//         isFetching: state.usersPage.isFetching,
+//         followingInProgress: state.usersPage.followingInProgress 
+//     }
+// }
+
+
 let mapStateToProps = (state) => {
+    console.log('UsersContainer mapStateToProps');
     return{
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress 
+        users: getUsersSuperSelector(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state) 
     }
 }
 
