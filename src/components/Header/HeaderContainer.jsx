@@ -6,10 +6,6 @@ import { connect } from 'react-redux';
 
 class HeaderContainer extends React.Component{
 
-    componentDidMount(){
-        this.props.getUserDataThunkCreator();       
-    }
-
     render(){
         return(
             <Header {...this.props}/>
@@ -28,5 +24,5 @@ let mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps,
-    { getUserDataThunkCreator, logOutUserThunkCreator }
+    { logOutUserThunkCreator }
     ) (HeaderContainer);
