@@ -18,16 +18,18 @@ class LoginContainer extends React.Component {
     render(){
         return (                    
             <div>
-                <Login onLogIn={this.onLogIn}/>
+                <Login {...this.props} onLogIn={this.onLogIn}/>
             </div>
         );
     }
 }
 
-
+const mapStateToProps = (state) => ({
+    isAuth: state.auth.isAuth
+})
 
 export default compose(
-    connect(null,
+    connect(mapStateToProps,
         { logInUserThunkCreator, logOutUserThunkCreator }
         )
 )(LoginContainer)    

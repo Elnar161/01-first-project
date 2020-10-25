@@ -16,8 +16,7 @@ const authReducer = (state = initialState, action) => {
             
             return {
                 ...state,
-                ...action.data,
-                isAuth: true            
+                ...action.data         
             };                                    
         
         default: return state;
@@ -25,8 +24,8 @@ const authReducer = (state = initialState, action) => {
 }
 
 
-export const setUserDataActionCreator = (userId, email, login) =>
-    ({ type: SET_USER_DATA, data: {userId, email, login} })   
+export const setUserDataActionCreator = (userId, email, login, isAuth) =>
+    ({ type: SET_USER_DATA, data: {userId, email, login, isAuth} })   
     
 export const getUserDataThunkCreator = () => (dispatch) => {
     authAPI.getMe()
@@ -34,7 +33,7 @@ export const getUserDataThunkCreator = () => (dispatch) => {
         if (data.resultCode === 0) {
             //userId, email, login
             let {id, email, login} = data.data;//деструктуризация
-            dispatch(setUserDataActionCreator(id, email, login));
+            dispatch(setUserDataActionCreator(id, email, login, true));
         }
         
     })
@@ -44,15 +43,16 @@ export const logInUserThunkCreator = (login, password, rememberMe) => (dispatch)
     authAPI.logIn(login, password, rememberMe)
     .then( data => {
         if (data.resultCode === 0){
-            authAPI.getMe()
-            .then(data => {         
-                if (data.resultCode === 0) {
-                    //userId, email, login
-                    let {id, email, login} = data.data;//деструктуризация
-                    dispatch(setUserDataActionCreator(id, email, login));
-                }
+            dispatch(getUserDataThunkCreator());
+            // authAPI.getMe()
+            // .then(data => {         
+            //     if (data.resultCode === 0) {
+            //         //userId, email, login
+            //         let {id, email, login} = data.data;//деструктуризация
+            //         dispatch(setUserDataActionCreator(id, email, login));
+            //     }
                 
-            })
+            // })
         }
     });       
 }
@@ -61,15 +61,7 @@ export const logOutUserThunkCreator = () => (dispatch) => {
     authAPI.logOut()
     .then( data => {
         if (data.resultCode === 0){
-            authAPI.getMe()
-            .then(data => {         
-                if (data.resultCode === 0) {
-                    //userId, email, login
-                    let {id, email, login} = data.data;//деструктуризация
-                    dispatch(setUserDataActionCreator(id, email, login));
-                }
-                
-            })
+            dispatch(setUserDataActionCreator(null, null, null, false));
         }
     });       
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import { Input } from '../Common/FormsControls/FormsControls';
 import { requeredField } from '../utils/validators';
@@ -26,6 +27,11 @@ const LoginReduxForm = reduxForm({
 })(LoginForm)
 
 const Login = (props) => {
+    debugger;
+    if (props.isAuth){
+        return <Redirect to='/profile'/>
+    }
+
     return(
     <div>
         <h1>Login</h1>
