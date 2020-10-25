@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import s from './ProfileInfo.module.css';
 
@@ -17,6 +18,14 @@ const ProfileStatusWithHooks = (props) => {
         //let setEditMode = stateWitgSetState[1];//функция с помощью которой менять это значение
         let[editMode, setEditMode] = useState(false);
         let[status, setStatus] = useState(props.status);
+
+        //закидываем функцию которая выполнится после отрисовки компоненты
+        
+        //устанавливаем зависимость [props.status]
+        //теперь при каждой отрисовке если props.status изменился то запустится функция в useEffect
+        useEffect( () => {
+            setStatus(props.status);
+        }, [props.status]);
 
         const activateEditMode = () => {
             setEditMode(true);
