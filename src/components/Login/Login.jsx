@@ -32,7 +32,6 @@ const LoginReduxForm = reduxForm({
 })(LoginForm)
 
 const Login = (props) => {
-    debugger;
     if (props.isAuth){
         return <Redirect to='/profile'/>
     }

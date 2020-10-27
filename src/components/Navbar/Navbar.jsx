@@ -3,7 +3,6 @@ import s from './Navbar.module.css';
 import { NavLink } from 'react-router-dom';
 import Friend from './friend/Friend';
 
-console.log(s);
 
 const Navbar = (props) => {
     let friendsList = props.friends.map((f) => <Friend avaUrl={f.avaUrl} name={f.name} key={f.id}/>)

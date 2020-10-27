@@ -45,7 +45,6 @@ class UsersApiComponent extends React.Component{
 
     //метод render обязателен
     render(){
-        console.log('UsersContainer render');
         return (   
             <div>   
             {this.props.isFetching ? 
@@ -78,7 +77,6 @@ class UsersApiComponent extends React.Component{
 
 
 let mapStateToProps = (state) => {
-    console.log('UsersContainer mapStateToProps');
     return{
         users: getUsersSuperSelector(state),
         pageSize: getPageSize(state),
