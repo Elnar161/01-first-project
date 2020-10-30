@@ -125,13 +125,13 @@ export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isF
 export const toggleFollowingInProgress = (inProgress, userId) => ({ type: TOGGLE_IS_FOLLOWING_PROGRESS, inProgress, userId })
 
 export const getUsersThunkCreator = (currentPage, pageSize) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(toggleIsFetching(true));
 
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
-            dispatch(setUsersActionCreator(data.items, data.totalCount));
-            dispatch(toggleIsFetching(false));
-        });
+        let data = await usersAPI.getUsers(currentPage, pageSize);
+       
+        dispatch(setUsersActionCreator(data.items, data.totalCount));
+        dispatch(toggleIsFetching(false));        
     }
 }
 
@@ -144,36 +144,36 @@ export const onPageChangedThunkCreator = (pageNumber) => {
 
 
 export const onFollowThunkCreator = (userId) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(toggleIsFetching(true));
         dispatch(toggleFollowingInProgress(true, userId));
      
-        usersAPI.postFollow(userId)
-        .then(data => { 
-            if (data.resultCode === 0)
-            {
-                dispatch(followActionCreator(userId));
-            }
-            dispatch(toggleIsFetching(false)); 
-            dispatch(toggleFollowingInProgress(false, userId));
-        })  
+        let data = await usersAPI.postFollow(userId);
+        
+        if (data.resultCode === 0)
+        {
+            dispatch(followActionCreator(userId));
+        }
+        dispatch(toggleIsFetching(false)); 
+        dispatch(toggleFollowingInProgress(false, userId));
+
     }
 }
 
 export const onUnFollowThunkCreator = (userId) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(toggleIsFetching(true));
         dispatch(toggleFollowingInProgress(true, userId));
      
-        usersAPI.deleteFollow(userId)
-        .then(data => { 
-            if (data.resultCode === 0)
-            {
-                dispatch(unfollowActionCreator(userId));
-            }
-            dispatch(toggleIsFetching(false)); 
-            dispatch(toggleFollowingInProgress(false, userId));
-        })  
+        let data = await usersAPI.deleteFollow(userId)
+        
+        if (data.resultCode === 0)
+        {
+            dispatch(unfollowActionCreator(userId));
+        }
+        dispatch(toggleIsFetching(false)); 
+        dispatch(toggleFollowingInProgress(false, userId));
+    
     }
 }
 

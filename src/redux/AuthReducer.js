@@ -1,7 +1,7 @@
 import { stopSubmit } from "redux-form";
 import { authAPI } from "../api/API";
 
-const SET_USER_DATA = 'SET_USER_DATA';
+const SET_USER_DATA = '/auth/SET_USER_DATA';
 
 let initialState = {
     userId: null,
@@ -40,27 +40,25 @@ export const getUserDataThunkCreator = () => (dispatch) => {
     })
 }
 
-export const logInUserThunkCreator = (login, password, rememberMe) => (dispatch) => {
-    authAPI.logIn(login, password, rememberMe)
-    .then( data => {
-        if (data.resultCode === 0){
-            dispatch(getUserDataThunkCreator());
-        }
-        else{
-            let message = data.messages.length > 0 ? data.messages[0] : 'Some error'
-            let action = stopSubmit('login', {_error: message});     
-            dispatch(action);   
-        }
-    });       
+export const logInUserThunkCreator = (login, password, rememberMe) => async (dispatch) => {
+    let data = await authAPI.logIn(login, password, rememberMe)
+debugger;
+    if (data.resultCode === 0){
+        dispatch(getUserDataThunkCreator());
+    }
+    else{
+        let message = data.messages.length > 0 ? data.messages[0] : 'Some error'
+        let action = stopSubmit('login', {_error: message});     
+        dispatch(action);   
+    }    
 }
 
-export const logOutUserThunkCreator = () => (dispatch) => {
-    authAPI.logOut()
-    .then( data => {
-        if (data.resultCode === 0){
-            dispatch(setUserDataActionCreator(null, null, null, false));
-        }
-    });       
+export const logOutUserThunkCreator = () => async (dispatch) => {
+    let data = await authAPI.logOut();
+
+    if (data.resultCode === 0){
+        dispatch(setUserDataActionCreator(null, null, null, false));
+    }
 }
 
  

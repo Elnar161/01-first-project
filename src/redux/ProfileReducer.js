@@ -107,25 +107,22 @@ export const setProfileInfoActionCreator= (profileInfo) =>
 export const setStatusActionCreator= (newStatus) =>
   ( {type: SET_STATUS, newStatus} )    
 
-export const getUserProfileThunkCreator = (userId) => (dispatch) => {
-  usersAPI.getProfile(userId)
-  .then(data => { dispatch(setProfileInfoActionCreator(data));})
+export const getUserProfileThunkCreator = (userId) => async (dispatch) => {
+  let data = await usersAPI.getProfile(userId)
+   dispatch(setProfileInfoActionCreator(data));
 
 }  
 
-export const getStatusThunkCreator = (userId) => (dispatch) => {
-  profileAPI.getStatus(userId)
-  .then(data => { dispatch(setStatusActionCreator(data));})
-
+export const getStatusThunkCreator = (userId) => async (dispatch) => {
+  let data = await profileAPI.getStatus(userId)
+  dispatch(setStatusActionCreator(data));
 } 
 
-export const updateStatusThunkCreator = (status) => (dispatch) => {
-  profileAPI.updateStatus(status)
-    .then(data => {
-      if (data.resultCode === 0) {
-        dispatch(setStatusActionCreator(status))
-      }
-    })
+export const updateStatusThunkCreator = (status) => async (dispatch) => {
+  let data = await profileAPI.updateStatus(status)
+  if (data.resultCode === 0) {
+    dispatch(setStatusActionCreator(status))
+  }
 }
 
 

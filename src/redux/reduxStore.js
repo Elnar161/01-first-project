@@ -9,7 +9,7 @@ import {reducer as formReducer } from 'redux-form';
 import thunkMiddleware from 'redux-thunk';
 import appReducer from './AppReducer.js';
 
-const { createStore, combineReducers, applyMiddleware } = require("redux");
+const { createStore, combineReducers, applyMiddleware, compose } = require("redux");
 
 
 let reducers = combineReducers({
@@ -22,7 +22,12 @@ let reducers = combineReducers({
     app: appReducer
 });
 
-let store = createStore(reducers, applyMiddleware(thunkMiddleware));
 
-window.store = store;
+ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers, /* preloadedState, */ composeEnhancers(
+    applyMiddleware(thunkMiddleware)
+  ));
+//let store = createStore(reducers, applyMiddleware(thunkMiddleware));
+
+//window.store = store;
 export default store;
