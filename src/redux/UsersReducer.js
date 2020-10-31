@@ -143,37 +143,30 @@ export const onPageChangedThunkCreator = (pageNumber) => {
 }    
 
 
+const followUnfollowFlow = async (dispatch, userId, apiMethod, actionCreator) => {
+   
+    dispatch(toggleIsFetching(true));
+    dispatch(toggleFollowingInProgress(true, userId));
+ 
+    let data = await apiMethod(userId);
+    
+    if (data.resultCode === 0)
+    {
+        dispatch(actionCreator(userId));
+    }
+    dispatch(toggleIsFetching(false)); 
+    dispatch(toggleFollowingInProgress(false, userId));
+}
+
 export const onFollowThunkCreator = (userId) => {
     return async (dispatch) => {
-        dispatch(toggleIsFetching(true));
-        dispatch(toggleFollowingInProgress(true, userId));
-     
-        let data = await usersAPI.postFollow(userId);
-        
-        if (data.resultCode === 0)
-        {
-            dispatch(followActionCreator(userId));
-        }
-        dispatch(toggleIsFetching(false)); 
-        dispatch(toggleFollowingInProgress(false, userId));
-
+        followUnfollowFlow(dispatch, userId, usersAPI.postFollow.bind(usersAPI), followActionCreator);
     }
 }
 
 export const onUnFollowThunkCreator = (userId) => {
     return async (dispatch) => {
-        dispatch(toggleIsFetching(true));
-        dispatch(toggleFollowingInProgress(true, userId));
-     
-        let data = await usersAPI.deleteFollow(userId)
-        
-        if (data.resultCode === 0)
-        {
-            dispatch(unfollowActionCreator(userId));
-        }
-        dispatch(toggleIsFetching(false)); 
-        dispatch(toggleFollowingInProgress(false, userId));
-    
+        followUnfollowFlow(dispatch, userId, usersAPI.deleteFollow.bind(usersAPI), unfollowActionCreator);    
     }
 }
 

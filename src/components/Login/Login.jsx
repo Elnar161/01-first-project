@@ -7,8 +7,8 @@ import { requeredField } from '../utils/validators';
 import style from './../Common/FormsControls/FormsControls.module.css'
 
 
-const LoginForm = (props) => {
-    return <form onSubmit={props.handleSubmit}>
+const LoginForm = ({handleSubmit, error}) => {
+    return <form onSubmit={handleSubmit}>
             <div>
                 <Field component={Input} placeholder='Login' name="login" validate={[requeredField]}/>
             </div>    
@@ -18,8 +18,8 @@ const LoginForm = (props) => {
             <div>
                 <Field component={Input} type='checkbox' name="rememberMe"/>remember me
             </div>
-            { props.error && <div className={style.formSummaryError}>
-                {props.error}
+            { error && <div className={style.formSummaryError}>
+                {error}
             </div>}
             <div>
                 <button>Login</button>
@@ -31,15 +31,15 @@ const LoginReduxForm = reduxForm({
     form: 'login'
 })(LoginForm)
 
-const Login = (props) => {
-    if (props.isAuth){
+const Login = ({isAuth, onLogIn}) => {
+    if (isAuth){
         return <Redirect to='/profile'/>
     }
 
     return(
     <div>
         <h1>Login</h1>
-        <LoginReduxForm onSubmit={props.onLogIn}/>
+        <LoginReduxForm onSubmit={onLogIn}/>
         
     </div>
     );

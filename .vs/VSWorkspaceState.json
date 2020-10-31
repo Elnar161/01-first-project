@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.idea",
+    "\\public",
+    "\\src",
+    "\\src\\components",
+    "\\src\\components\\Profile"
+  ],
+  "SelectedNode": "\\src\\components\\Profile\\ProfileContainer.jsx",
+  "PreviewInSolutionExplorer": false
+}
