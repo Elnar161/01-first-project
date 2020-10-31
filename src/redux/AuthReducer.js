@@ -42,7 +42,7 @@ export const getUserDataThunkCreator = () => (dispatch) => {
 
 export const logInUserThunkCreator = (login, password, rememberMe) => async (dispatch) => {
     let data = await authAPI.logIn(login, password, rememberMe)
-debugger;
+
     if (data.resultCode === 0){
         dispatch(getUserDataThunkCreator());
     }

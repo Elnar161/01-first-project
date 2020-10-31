@@ -12,15 +12,12 @@ import { compose } from 'redux';
 
 class ProfileContainer extends React.Component {
 
-    componentDidMount(){    
-        console.log('componentDidMount');    
+    componentDidMount(){            
         let userId = this.props.match.params.userId;
         if (!userId){
             userId = this.props.authorizedUserId;
         }
-        console.log('getUserProfileThunkCreator');
         this.props.getUserProfileThunkCreator(userId);         
-        console.log('getStatusThunkCreator');
         this.props.getStatusThunkCreator(userId);   
     }
 
