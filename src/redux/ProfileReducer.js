@@ -1,10 +1,12 @@
+import { stopSubmit } from "redux-form";
 import { usersAPI, profileAPI } from "../api/API";
 
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
-const SET_PROFILE_INFO = 'SET_PROFILE_INFO';
-const SET_STATUS = 'SET_STATUS';
-const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS';
+const ADD_POST = 'profilePage/ADD-POST';
+const UPDATE_NEW_POST_TEXT = 'profilePage/UPDATE-NEW-POST-TEXT';
+const SET_PROFILE_INFO = 'profilePage/SET_PROFILE_INFO';
+const SET_STATUS = 'profilePage/SET_STATUS';
+const SAVE_PHOTO_SUCCESS = 'profilePage/SAVE_PHOTO_SUCCESS';
+const SAVE_PROFILE_SUCCESS = 'profilePage/SAVE_PROFILE_SUCCESS';
 
 
 let initialState = {
@@ -141,6 +143,26 @@ export const savePhotoThunkCreator = (file) => async (dispatch) => {
   }  
 }
 
+export const saveProfileThunkCreator = (profile) => async (dispatch, getState) => {
+  debugger;
+  let userId = getState().auth.userId;
+  let data = await profileAPI.saveProfile(profile);
+  if (data.resultCode === 0) {
+    dispatch(getUserProfileThunkCreator(userId));
+  }
+  else{
+    debugger;
+    let message = data.messages.length > 0 ? data.messages[0] : 'Some error'
+    let action = stopSubmit('profile', {_error: message});     
+    
+    //чтобы подсветить поле
+    //let action = stopSubmit('profile', {"contacts":{"facebook": message}});     
+    
+    debugger;
+    let a = dispatch(action);  
+    return Promise.reject(message);
+} 
+}
 
   
 export default profileReducer;
