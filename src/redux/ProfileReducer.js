@@ -4,6 +4,8 @@ const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_PROFILE_INFO = 'SET_PROFILE_INFO';
 const SET_STATUS = 'SET_STATUS';
+const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS';
+
 
 let initialState = {
         profileInfo: {
@@ -90,7 +92,12 @@ const profileReducer = (state = initialState, action) =>{
               ...state,
               status: action.newStatus
             };            
-
+          case SAVE_PHOTO_SUCCESS:
+            return{
+              ...state,
+              profileInfo: 
+              {...state.profileInfo, photos: action.photos}
+            }; 
         default: return state;
     }    
 }
@@ -123,6 +130,15 @@ export const updateStatusThunkCreator = (status) => async (dispatch) => {
   if (data.resultCode === 0) {
     dispatch(setStatusActionCreator(status))
   }
+}
+export const setPhotoSuccessActionCreator= (photos) =>
+  ( {type: SAVE_PHOTO_SUCCESS, photos} )
+
+export const savePhotoThunkCreator = (file) => async (dispatch) => {
+  let data = await profileAPI.savePhoto(file);
+  if (data.resultCode === 0) {
+    dispatch(setPhotoSuccessActionCreator(data.data.photos))
+  }  
 }
 
 

@@ -1,20 +1,26 @@
 import React from 'react';
 import s from './ProfileInfo.module.css';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks.jsx';
+import userPhoto from '../../../assets/images/user.png'
+import { Input } from '../../Common/FormsControls/FormsControls';
 
-const ProfileInfo = (props) =>{
+const ProfileInfo = ({profileInfo, status, updateStatus, isOwner, savePhoto}) =>{
+    
+    const onMainPhotoSelected = (e) => {
+        if (e.target.files.length){
+            savePhoto(e.target.files[0]);
+        }
+    }
+
     return(
         
         <div>
-            {/* <div>
-                <img src="https://avatars.mds.yandex.net/get-pdb/477388/8ea85076-5274-4d1e-b4b8-5577191e5d25/s1200?webp=false" className={s.ava1}></img>
-            </div> */}
-
             <div className={s.description_block}>
-                <img src={props.profileInfo.photos.large} className={s.ava}></img>
-                <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>
-                <h1>{props.profileInfo.fullName}</h1>
-                <h2>{props.profileInfo.aboutMe}</h2>
+                <img src={profileInfo.photos.large || userPhoto} className={s.ava}></img>
+                {isOwner && <input type="file" onChange={onMainPhotoSelected}/>}
+                <ProfileStatusWithHooks status={status} updateStatus={updateStatus}/>
+                <h1>{profileInfo.fullName}</h1>
+                <h2>{profileInfo.aboutMe}</h2>
             </div>
         </div>
     );
