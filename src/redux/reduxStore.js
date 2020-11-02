@@ -1,13 +1,13 @@
 
-import authReducer from './AuthReducer.js';
-import dialogsReducer from './DialogsReducer.js';
-import profileReducer from './ProfileReducer.js';
-import sidebarReducer from './SidebarReducer.js';
-import usersReducer from './UsersReducer.js';
+import authReducer from './AuthReducer.ts';
+import dialogsReducer from './DialogsReducer.ts';
+import profileReducer from './ProfileReducer.ts';
+import sidebarReducer from './SidebarReducer.ts';
+import usersReducer from './UsersReducer.ts';
 import {reducer as formReducer } from 'redux-form';
 
 import thunkMiddleware from 'redux-thunk';
-import appReducer from './AppReducer.js';
+import appReducer from './AppReducer.ts';
 
 const { createStore, combineReducers, applyMiddleware, compose } = require("redux");
 
