@@ -1,4 +1,15 @@
-import Axios from "axios";
+import Axios, { AxiosResponse } from "axios";
+import { ProfileType } from "../types/types";
+
+export enum ResultCodesEnum {
+    Success = 0,
+    Error = 1
+}
+
+export enum ResultCodesCaptcha  {
+    CaptchaIsRequired = 10
+}
+
 
 const instanseAxios = Axios.create(
     { withCredentials: true, 
@@ -6,42 +17,52 @@ const instanseAxios = Axios.create(
       headers: { "API-KEY": '83927d7b-5045-4135-aced-5487d21ee72f'}})
 
 
+export type ApiUserType = {
+    id: number
+    name: string
+    status: string
+    photos:{
+        small: string | null
+        large: string | null
+    }
+    followed: boolean
+}     
+
+export type GetUsersResponseType = {
+    items: Array<ApiUserType>
+    totalCount: number
+    error: string
+}
+
 export const usersAPI = {
-    getUsers(currentPage = 1, pageSize = 20) {
+    getUsers(currentPage: number = 1, pageSize: number = 20) {
         return (            
-            instanseAxios.get(`users?page=${currentPage}&count=${pageSize}`)
+            instanseAxios.get<GetUsersResponseType>(`users?page=${currentPage}&count=${pageSize}`)
                 .then(response => response.data)
         )
     },
 
-    postFollow(userId) {
+    postFollow(userId: number) {
         return (
-            instanseAxios.post(`follow/${userId}`)
-            // Axios.post(`${rootUrlAPI}/follow/${userId}`, {}, 
-            // { withCredentials: true, 
-            // headers: { "API-KEY": KeyAPI}}) 
+            instanseAxios.post<ResponseType>(`follow/${userId}`)
             .then(response => response.data)
         )    
     },
     
-    deleteFollow(userId){
+    deleteFollow(userId: number){
         return (
-            instanseAxios.delete(`follow/${userId}`)
-            // Axios.post(`${rootUrlAPI}/follow/${userId}`, {}, 
-            // { withCredentials: true, 
-            // headers: { "API-KEY": KeyAPI}}) 
+            instanseAxios.delete<ResponseType>(`follow/${userId}`)
             .then(response => response.data)
         ) 
     },
 
-    getProfile(userId) {
-        console.warn('Obsolete method. Please profileAPI object.');
+    getProfile(userId: number) {        
         return profileAPI.getProfile(userId);
     }
 }      
 
 export const profileAPI = {
-    getProfile(userId) {
+    getProfile(userId: number) {
         return (
             instanseAxios.get(`profile/${userId}`)
            // Axios.get(`${rootUrlAPI}/profile/${userId}`)
@@ -49,19 +70,19 @@ export const profileAPI = {
         )
     },
 
-    getStatus(userId) {
+    getStatus(userId: number) {
         return (
             instanseAxios.get(`profile/status/${userId}`)        
             .then(response => response.data)
         )
     },    
 
-    updateStatus(status){
+    updateStatus(status: string){
         return instanseAxios.put('profile/status', { status: status })
         .then(response => response.data)
     },
     
-    savePhoto(photoFile){
+    savePhoto(photoFile: any){
         debugger;
         var formData = new FormData();
         formData.append("image", photoFile);
@@ -74,7 +95,7 @@ export const profileAPI = {
         .then(response => response.data)
     },
 
-    saveProfile(profile){
+    saveProfile(profile: ProfileType){
         return instanseAxios.put('profile', profile)
         .then(response => response.data)
     }
@@ -85,17 +106,14 @@ export const profileAPI = {
 export const authAPI = {
     getMe() {
         return (
-            instanseAxios.get(`auth/me`)
-            // Axios.get(`${rootUrlAPI}/auth/me`,            
-            //     { withCredentials: true, 
-            //       headers: { "API-KEY": KeyAPI}})
+            instanseAxios.get<MeResponseType>(`auth/me`)
                 .then(response => response.data)
         )
     },
 
-    logIn(email, password, rememberMe){
+    logIn(email: string, password: string, rememberMe: boolean){
         return(
-            instanseAxios.post(`auth/login`, {
+            instanseAxios.post<LogInResponseType>(`auth/login`, {
                 email: email,
                 password: password,
                 rememberMe: rememberMe,
@@ -107,9 +125,34 @@ export const authAPI = {
 
     logOut(){
         return(
-            instanseAxios.delete(`auth/login`)
+            instanseAxios.delete<ResponseType>(`auth/login`)
             .then(response => response.data)
         );
     }    
 }
 
+
+
+type MeResponseType = {
+    resultCode: ResultCodesEnum
+    messages: Array<string>
+    data: {
+        id: number
+        email: string
+        login: string
+    }
+}
+
+type LogInResponseType = {
+    resultCode: ResultCodesEnum | ResultCodesCaptcha
+    messages: Array<string>
+    data: {
+        userId: number
+    }
+}
+
+type ResponseType = {
+    resultCode: ResultCodesEnum
+    messages: Array<string>
+    data: any
+}

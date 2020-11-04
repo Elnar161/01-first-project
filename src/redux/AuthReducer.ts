@@ -1,7 +1,8 @@
+import { ResultCodesCaptcha } from './../api/API';
 import { AppStateType } from './reduxStore';
 import { FormAction, stopSubmit } from "redux-form";
 import { ThunkAction } from "redux-thunk";
-import { authAPI } from "../api/API";
+import { authAPI, ResultCodesEnum } from "../api/API";
 
 const SET_USER_DATA = 'AUTH/SET_USER_DATA';
 
@@ -38,7 +39,7 @@ type SetUserDataActionPayloadType  = {
 }
 
 
-type ActionsTypes = SetUserDataActionType
+export type AuthReducerActionsTypes = SetUserDataActionType
 
 type SetUserDataActionType = {
     type: typeof SET_USER_DATA
@@ -49,12 +50,12 @@ export const setUserDataActionCreator =
      ({ type: SET_USER_DATA, payload: {userId, email, login, isAuth} })   
     
 
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes | FormAction>;     
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, AuthReducerActionsTypes | FormAction>;     
 export const getUserDataThunkCreator = (): ThunkType => (dispatch) => {
     return authAPI.getMe()
     .then(data => {         
-        if (data.resultCode === 0) {
-            //userId, email, login
+        if (data.resultCode === ResultCodesEnum.Success) {
+            //userId, email, login            
             let {id, email, login} = data.data;//деструктуризация
             dispatch(setUserDataActionCreator(id, email, login, true));
         }
@@ -65,7 +66,7 @@ export const getUserDataThunkCreator = (): ThunkType => (dispatch) => {
 export const logInUserThunkCreator = (login: string, password: string, rememberMe: boolean): ThunkType => async (dispatch) => {
     let data = await authAPI.logIn(login, password, rememberMe)
 
-    if (data.resultCode === 0){
+    if (data.resultCode === ResultCodesEnum.Success){
         dispatch(getUserDataThunkCreator());
     }
     else{
