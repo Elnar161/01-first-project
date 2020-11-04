@@ -2,7 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import s from './Paginator.module.css';
 
-let Paginator = ({totalCount, pageSize, currentPage, onPageChanged, portionSize = 10}) => {
+
+let Paginator2 = ({totalCount, pageSize, currentPage, onPageChanged, portionSize = 10}) => {
        
     debugger;
     let pagesCount = Math.ceil(totalCount / pageSize);

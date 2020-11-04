@@ -1,5 +1,8 @@
+import { Dispatch } from "react";
+import { ThunkAction } from "redux-thunk";
 import { usersAPI } from "../api/API";
 import { UserType } from "../types/types";
+import { AppStateType } from "./reduxStore";
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
@@ -21,12 +24,12 @@ let initialState = {
 
 type InitialStateType = typeof initialState;
 
-const usersReducer = (state = initialState, action: any): InitialStateType => {
+const usersReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case FOLLOW:
             
             return {
-                ...state,               
+                ...state,          
                users: state.users.map(u => {
                    if (u.id === action.userId) {
                        return {...u, followed: true}
@@ -75,6 +78,9 @@ const usersReducer = (state = initialState, action: any): InitialStateType => {
     }
 }
 
+type ActionsTypes = FollowActionType | UnfollowActionType | SetUsersActionType |
+    SetCurrentPageActionType | ToggleIsFetchingType | ToggleFollowingInProgressType
+
 type FollowActionType = {
     type: typeof FOLLOW
     userId: number
@@ -119,10 +125,16 @@ type ToggleFollowingInProgressType = {
 export const toggleFollowingInProgress = (inProgress: boolean, userId: number): ToggleFollowingInProgressType => 
     ({ type: TOGGLE_IS_FOLLOWING_PROGRESS, inProgress, userId })
 
-export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-    return async (dispatch: any) => {
-        dispatch(toggleIsFetching(true));
 
+//1 варик ThunkAction используется для типизации санки
+//2 варик (pageNumber: number):(dispatch: Dispatch<ActionsTypes>, getState: () => AppStateType)
+
+
+export const getUsersThunkCreator = (currentPage: number, pageSize: number): 
+        ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> => {
+    return async (dispatch, getState) => {
+        dispatch(toggleIsFetching(true));
+        
         let data = await usersAPI.getUsers(currentPage, pageSize);
        
         dispatch(setUsersActionCreator(data.items, data.totalCount));
@@ -131,15 +143,17 @@ export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
 }
 
 export const onPageChangedThunkCreator = (pageNumber: number) => {  
-    return (dispatch: any) => {    
+    return (dispatch: Dispatch<ActionsTypes>, getState: () => AppStateType) => {    
         dispatch(setCurrentPageActionCreator(pageNumber));
         getUsersThunkCreator(pageNumber, 100);  
     }
 }    
+//вынисем ThunkType в отдельный тип
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>;
+type DispatchType = Dispatch<ActionsTypes>;
 
-
-const followUnfollowFlow = async (dispatch: any, 
-    userId: number, apiMethod: any, actionCreator: any) => {
+const _followUnfollowFlow = async (dispatch: DispatchType, 
+    userId: number, apiMethod: any, actionCreator: (userId: number) => FollowActionType | UnfollowActionType) => {
    
     dispatch(toggleIsFetching(true));
     dispatch(toggleFollowingInProgress(true, userId));
@@ -154,15 +168,15 @@ const followUnfollowFlow = async (dispatch: any,
     dispatch(toggleFollowingInProgress(false, userId));
 }
 
-export const onFollowThunkCreator = (userId: number) => {
-    return async (dispatch: any) => {
-        followUnfollowFlow(dispatch, userId, usersAPI.postFollow.bind(usersAPI), followActionCreator);
+export const onFollowThunkCreator = (userId: number): ThunkType => {
+    return async (dispatch) => {
+        _followUnfollowFlow(dispatch, userId, usersAPI.postFollow.bind(usersAPI), followActionCreator);
     }
 }
 
-export const onUnFollowThunkCreator = (userId: number) => {
-    return async (dispatch: any) => {
-        followUnfollowFlow(dispatch, userId, usersAPI.deleteFollow.bind(usersAPI), unfollowActionCreator);    
+export const onUnFollowThunkCreator = (userId: number): ThunkType => {
+    return async (dispatch) => {
+        _followUnfollowFlow(dispatch, userId, usersAPI.deleteFollow.bind(usersAPI), unfollowActionCreator);    
     }
 }
 

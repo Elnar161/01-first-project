@@ -5,12 +5,18 @@ import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {Textarea} from './../../Common/FormsControls/FormsControls';
 import { Component } from 'react';
+import { PostType } from '../../../types/types';
+
+type PropsType = {
+    posts: Array<PostType>
+    addPost: (newPostText: string) => void
+}
 
 
-const MyPosts = React.memo((props) => { 
-    console.log('MyPosts render');
-    let arrProsts = props.posts.map(p => <Post message={p.message} likeCount={p.likeCount}/>);
-    let addPost = (data) => {                 
+const MyPosts: React.FC<PropsType> = React.memo((props) => { 
+
+    let arrProsts = props.posts.map(p => <Post message={p.message} likesCount={p.likesCount}/>);
+    let addPost = (data: any) => {                 
         props.addPost(data.newPostText);} 
     
 
@@ -31,7 +37,7 @@ const MyPosts = React.memo((props) => {
 
 let maxLength10 = maxLengthCreator(10);
 
-const AddNewPostForm = (props) => {
+const AddNewPostForm = (props: any) => {
     return  <Form onSubmit={props.handleSubmit}>    
                 <Field component={Textarea} name="newPostText" 
                 validate={[requeredField, maxLength10 ]} placeholder='Post message'/>

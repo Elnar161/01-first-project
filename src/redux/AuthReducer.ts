@@ -1,4 +1,6 @@
-import { stopSubmit } from "redux-form";
+import { AppStateType } from './reduxStore';
+import { FormAction, stopSubmit } from "redux-form";
+import { ThunkAction } from "redux-thunk";
 import { authAPI } from "../api/API";
 
 const SET_USER_DATA = 'AUTH/SET_USER_DATA';
@@ -14,12 +16,12 @@ let initialState = {
 
 export type InitialStateType = typeof initialState;
 
-const authReducer = (state = initialState, action: any): InitialStateType => {
+const authReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case SET_USER_DATA:
             
             return {
-                userId: "1sdf23",
+                userId: "123",
                 ...state,
                 ...action.payload         
             };                                    
@@ -35,16 +37,20 @@ type SetUserDataActionPayloadType  = {
     isAuth: boolean  
 }
 
+
+type ActionsTypes = SetUserDataActionType
+
 type SetUserDataActionType = {
     type: typeof SET_USER_DATA
     payload: SetUserDataActionPayloadType
 }
-
 export const setUserDataActionCreator = 
     (userId: number | null, email: string | null, login: string | null, isAuth: boolean): SetUserDataActionType =>
      ({ type: SET_USER_DATA, payload: {userId, email, login, isAuth} })   
     
-export const getUserDataThunkCreator = () => (dispatch: any) => {
+
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes | FormAction>;     
+export const getUserDataThunkCreator = (): ThunkType => (dispatch) => {
     return authAPI.getMe()
     .then(data => {         
         if (data.resultCode === 0) {
@@ -56,7 +62,7 @@ export const getUserDataThunkCreator = () => (dispatch: any) => {
     })
 }
 
-export const logInUserThunkCreator = (login: string, password: string, rememberMe: boolean) => async (dispatch: any) => {
+export const logInUserThunkCreator = (login: string, password: string, rememberMe: boolean): ThunkType => async (dispatch) => {
     let data = await authAPI.logIn(login, password, rememberMe)
 
     if (data.resultCode === 0){
@@ -69,7 +75,7 @@ export const logInUserThunkCreator = (login: string, password: string, rememberM
     }    
 }
 
-export const logOutUserThunkCreator = () => async (dispatch: any) => {
+export const logOutUserThunkCreator = (): ThunkType => async (dispatch) => {
     let data = await authAPI.logOut();
 
     if (data.resultCode === 0){

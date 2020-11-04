@@ -1,6 +1,8 @@
-import { stopSubmit } from "redux-form";
+import { FormAction, stopSubmit } from "redux-form";
+import { ThunkAction } from "redux-thunk";
 import { usersAPI, profileAPI } from "../api/API";
 import { ContactsType, PhotosType, PostType, ProfileType } from "../types/types";
+import { AppStateType } from "./reduxStore";
 
 const ADD_POST = 'profilePage/ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'profilePage/UPDATE-NEW-POST-TEXT';
@@ -44,7 +46,7 @@ let initialState = {
 
 export type InitialStateType = typeof initialState;
 
-const profileReducer = (state = initialState, action: any): InitialStateType =>{
+const profileReducer = (state = initialState, action: ActionsTypes): InitialStateType =>{
     switch (action.type) {
         case ADD_POST:
           return {
@@ -80,6 +82,10 @@ const profileReducer = (state = initialState, action: any): InitialStateType =>{
     }    
 }
 
+type ActionsTypes = AddPostActionType | UpdateNewPostTextActionCreator |
+                    SetProfileInfoActionCreator | SetStatusActionCreator |
+                    SetPhotoSuccessActionType
+
 type AddPostActionType = {
   type: typeof ADD_POST
   newPostText: string
@@ -108,23 +114,6 @@ type SetStatusActionCreator = {
 export const setStatusActionCreator = (newStatus: string): SetStatusActionCreator =>
   ( {type: SET_STATUS, newStatus} )    
 
-export const getUserProfileThunkCreator = (userId: number) => async (dispatch: any) => {
-  let data = await usersAPI.getProfile(userId)
-   dispatch(setProfileInfoActionCreator(data));
-}  
-
-export const getStatusThunkCreator = (userId: number) => async (dispatch: any) => {
-  let data = await profileAPI.getStatus(userId)
-  dispatch(setStatusActionCreator(data));
-} 
-
-export const updateStatusThunkCreator = (status: string) => async (dispatch: any) => {
-  let data = await profileAPI.updateStatus(status)
-  if (data.resultCode === 0) {
-    dispatch(setStatusActionCreator(status))
-  }
-}
-
 type SetPhotoSuccessActionType = {
   type: typeof SAVE_PHOTO_SUCCESS
   photos: PhotosType
@@ -132,31 +121,50 @@ type SetPhotoSuccessActionType = {
 export const setPhotoSuccessActionCreator= (photos: PhotosType): SetPhotoSuccessActionType =>
   ( {type: SAVE_PHOTO_SUCCESS, photos} )
 
-export const savePhotoThunkCreator = (file: any) => 
-async (dispatch: any) => {
+
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes | FormAction>;
+
+export const getUserProfileThunkCreator = (userId: number): ThunkType => async (dispatch) => {
+  let data = await usersAPI.getProfile(userId)
+   dispatch(setProfileInfoActionCreator(data));
+}  
+
+export const getStatusThunkCreator = (userId: number): ThunkType => async (dispatch) => {
+  let data = await profileAPI.getStatus(userId)
+  dispatch(setStatusActionCreator(data));
+} 
+
+export const updateStatusThunkCreator = (status: string): ThunkType => async (dispatch) => {
+  let data = await profileAPI.updateStatus(status)
+  if (data.resultCode === 0) {
+    dispatch(setStatusActionCreator(status))
+  }
+}
+
+export const savePhotoThunkCreator = (file: any): ThunkType => 
+async (dispatch) => {
   let data = await profileAPI.savePhoto(file);
   if (data.resultCode === 0) {
     dispatch(setPhotoSuccessActionCreator(data.data.photos))
   }  
 }
 
-export const saveProfileThunkCreator = (profile: ProfileType) => 
-async (dispatch: any, getState: any) => {
-  debugger;
+export const saveProfileThunkCreator = (profile: ProfileType): ThunkType => 
+async (dispatch, getState) => {
+  
   let userId = getState().auth.userId;
   let data = await profileAPI.saveProfile(profile);
   if (data.resultCode === 0) {
     dispatch(getUserProfileThunkCreator(userId));
   }
   else{
-    debugger;
+    
     let message = data.messages.length > 0 ? data.messages[0] : 'Some error'
     let action = stopSubmit('profile', {_error: message});     
     
     //чтобы подсветить поле
     //let action = stopSubmit('profile', {"contacts":{"facebook": message}});     
     
-    debugger;
     let a = dispatch(action);  
     return Promise.reject(message);
 } 

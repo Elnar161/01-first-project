@@ -4,14 +4,15 @@ import { Input, Textarea } from '../../Common/FormsControls/FormsControls';
 import { requeredField } from '../../utils/validators';
 import {Contact} from './ProfileInfo';
 import style from './../../Common/FormsControls/FormsControls.module.css'
+import { ProfileType } from '../../../types/types';
 
 const ProfileDataForm = ({handleSubmit, profileInfo, error}) => {
     return  <form onSubmit={handleSubmit}>FORM
                  <div><button>Save</button> </div>  
 
-                { error && <div className={style.formSummaryError}>
+                {error && <div className={style.formSummaryError}>
                     {error}
-                    </div>}                                   
+                </div>}                                   
                 
                 <div> 
                 
