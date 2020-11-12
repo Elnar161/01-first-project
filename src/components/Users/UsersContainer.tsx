@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { onPageChangedThunkCreator, setCurrentPageActionCreator,
+import { onPageChangedThunkCreator, actions,
          getUsersThunkCreator, onFollowThunkCreator, onUnFollowThunkCreator } from '../../redux/UsersReducer';
 import Users from './Users';
 import Preloader from '../Common/Preloader/Preloader';
@@ -94,7 +94,7 @@ export default compose(
     connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>
     (mapStateToProps, 
         {
-            setCurrentPage: setCurrentPageActionCreator,
+            setCurrentPage: actions.setCurrentPageActionCreator,
             onPageChanged: onPageChangedThunkCreator,
             getUsers: getUsersThunkCreator, 
             onFollow: onFollowThunkCreator, 

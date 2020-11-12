@@ -1,5 +1,5 @@
 import Axios, { AxiosResponse } from "axios";
-import { ProfileType } from "../types/types";
+import { ProfileType, UserType } from "../types/types";
 
 export enum ResultCodesEnum {
     Success = 0,
@@ -29,7 +29,7 @@ export type ApiUserType = {
 }     
 
 export type GetUsersResponseType = {
-    items: Array<ApiUserType>
+    items: Array<UserType>
     totalCount: number
     error: string
 }

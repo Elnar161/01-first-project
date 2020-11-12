@@ -1,13 +1,20 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Field, reduxForm } from 'redux-form';
+import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import { Input } from '../Common/FormsControls/FormsControls';
 import { requeredField } from '../utils/validators';
 
 import style from './../Common/FormsControls/FormsControls.module.css'
 
+export type LoginFormValuesType = {
+    login:string 
+    password: string 
+    rememberMe: boolean
+}
 
-const LoginForm = ({handleSubmit, error}) => {
+type LoginFormValuesTypeKeys = keyof LoginFormValuesType
+
+const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType>> = ({handleSubmit, error}) => {
     return <form onSubmit={handleSubmit}>
             <div>
                 <Field component={Input} placeholder='Login' name="login" validate={[requeredField]}/>
@@ -27,11 +34,16 @@ const LoginForm = ({handleSubmit, error}) => {
         </form>    
 }
 
-const LoginReduxForm = reduxForm({
+const LoginReduxForm = reduxForm<LoginFormValuesType>({
     form: 'login'
 })(LoginForm)
 
-const Login = ({isAuth, onLogIn}) => {
+type LoginPropsType = {
+    isAuth: boolean
+    onLogIn: (formData: LoginFormValuesType) => void
+}
+const Login: React.FC<LoginPropsType> = ({isAuth, onLogIn}) => {
+   
     if (isAuth){
         return <Redirect to='/profile'/>
     }
